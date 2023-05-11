@@ -11,5 +11,8 @@
     "url": "git+https://github.com/fev1n/fragments.git"
   },
   "author": "Fevin",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "pretier": "0.0.1"
+  }
 }
