@@ -1,0 +1,15 @@
+{
+  "name": "fragments",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Fragments of the CCP project (back-end)",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fev1n/fragments.git"
+  },
+  "author": "Fevin",
+  "license": "UNLICENSED"
+}
