@@ -4,7 +4,8 @@
   "version": "0.0.1",
   "description": "Fragments of the CCP project (back-end)",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --config .eslintrc.js src/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -13,6 +14,7 @@
   "author": "Fevin",
   "license": "UNLICENSED",
   "devDependencies": {
+    "eslint": "^8.40.0",
     "pretier": "0.0.1"
   }
 }
