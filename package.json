@@ -16,5 +16,10 @@
   "devDependencies": {
     "eslint": "^8.40.0",
     "pretier": "0.0.1"
+  },
+  "dependencies": {
+    "pino": "^8.14.1",
+    "pino-http": "^8.3.3",
+    "pino-pretty": "^10.0.0"
   }
 }
