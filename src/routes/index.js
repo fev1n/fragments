@@ -8,6 +8,9 @@ const { version, author } = require('../../package.json');
 // Our authentication middleware
 const { authenticate } = require('../authorization');
 
+// importing heath check route from response.js
+const { createSuccessResponse } = require('../response.js');
+
 // Create a router that we can use to mount our API
 const router = express.Router();
 
@@ -23,16 +26,14 @@ router.use(`/v1`, authenticate(), require('./api'));
  * we'll respond with a 200 OK.  If not, the server isn't healthy.
  */
 router.get('/', (req, res) => {
-  // Client's shouldn't cache this response (always request it fresh)
-  res.setHeader('Cache-Control', 'no-cache');
-  // Send a 200 'OK' response
-  res.status(200).json({
-    status: 'ok',
+  const data = {
+    message: 'Server worked well',
     author,
-    // Use your own GitHub URL for this...
     githubUrl: 'https://github.com/fev1n/fragments',
     version,
-  });
+  };
+  res.setHeader('Cache-Control', 'no-cache');
+  res.json(createSuccessResponse(data));
 });
 
 module.exports = router;
