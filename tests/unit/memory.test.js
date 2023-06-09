@@ -80,8 +80,6 @@ describe('fragments-database', () => {
     expect(async () => await writeFragmentData(ownerId, id, buffer)).rejects.toThrow();
   });
 
-  // //Reading the data/metadata normally is already tested in above test suites where we update data and read it afterwards
-
   test('readFragment() returns undefined if no metadata exists for given ids', async () => {
     const fragment = { ownerId, id: 't' };
     const result = await readFragment(fragment.ownerId, fragment.id);
