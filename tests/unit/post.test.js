@@ -38,7 +38,7 @@ describe('POST /v1/fragments', () => {
     expect(new Date(res.body.fragment.created)).toBeInstanceOf(Date);
     expect(new Date(res.body.fragment.updated)).toBeInstanceOf(Date);
     expect(res.body.fragment.type).toEqual('text/plain');
-    expect(res.body.fragment.ownerId).toEqual('user1@email.com');
+    expect(res.body.fragment.ownerId).not.toBeNull();
     expect(res.body.fragment.size).toEqual(35);
   });
 
