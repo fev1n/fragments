@@ -3,7 +3,7 @@ const { createSuccessResponse, createErrorResponse } = require('../../response')
 const logger = require('../../logger');
 
 module.exports = async (req, res) => {
-  const apiURL = process.env.API_URL || req.headers.host;
+  const apiURL = req.get('host');
 
   if (!Buffer.isBuffer(req.body) || !Fragment.isSupportedType(req.get('Content-Type'))) {
     return res.status(415).json(createErrorResponse(415, 'Unsupported Media Type'));
@@ -19,11 +19,8 @@ module.exports = async (req, res) => {
     await fragment.save();
 
     logger.debug('Setting successful response');
-
-    res
-      .location(`${apiURL}/v1/fragments/${fragment.id}`)
-      .status(201)
-      .json(createSuccessResponse({ fragment }));
+    res.setHeader('Location', `${apiURL}://${req.get('host')}/v1/fragments/${fragment.id}`);
+    res.status(201).json(createSuccessResponse({ fragment }));
   } catch (error) {
     res.status(404).json(createErrorResponse(404, error));
   }
