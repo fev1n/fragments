@@ -1,9 +1,10 @@
+# Stage 1: Buil stage
 # Parent(base) image to use as a astarting point
-# Use node version 18.13.0
-FROM node:18.16.0
+# Use node version 18.16.0
+FROM node:18.16.0-alpine@sha256:9036ddb8252ba7089c2c83eb2b0dcaf74ff1069e8ddf86fe2bd6dc5fecc9492d AS build
 
 LABEL maintainer="Fevin Patel <fevin.tech@aol.com>"
-LABEL description="Fragments node.js microservice"
+LABEL description="Fragments node.js microservice - Build stage"
 
 # Setting up environmet variables 
 
@@ -31,6 +32,18 @@ RUN npm install
 
 # Copy src to /app/src/
 COPY ./src ./src
+
+# Stage 2: Production stage
+FROM node:18.16.0-alpine@sha256:9036ddb8252ba7089c2c83eb2b0dcaf74ff1069e8ddf86fe2bd6dc5fecc9492d AS production
+LABEL description="Fragments node.js microservice - Production Stage"
+
+ENV PORT=8080
+
+# Use /app as our working directory
+WORKDIR /app
+
+# Copy the built files from the previous stage
+COPY --from=build /app /app
 
 # Copy our HTPASSWD file
 COPY ./tests/.htpasswd ./tests/.htpasswd
