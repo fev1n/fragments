@@ -49,7 +49,7 @@ COPY --from=build /app /app
 COPY ./tests/.htpasswd ./tests/.htpasswd
 
 # Start the container by running our server
-CMD npm start
+CMD ["npm", "start"]
 
 # Port that container will listen to. We run our service on port 8080
 EXPOSE 8080
