@@ -3,7 +3,10 @@ const { createSuccessResponse, createErrorResponse } = require('../../response')
 const logger = require('../../logger');
 
 module.exports = async (req, res) => {
-  const apiURL = req.get('host');
+  const scheme = req.protocol;
+  const hostname = req.get('host');
+  const path = req.originalUrl;
+  const apiURL = `${scheme}://${hostname}${path}`;
 
   if (!Buffer.isBuffer(req.body) || !Fragment.isSupportedType(req.get('Content-Type'))) {
     return res.status(415).json(createErrorResponse(415, 'Unsupported Media Type'));
