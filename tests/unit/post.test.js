@@ -73,4 +73,14 @@ describe('POST /v1/fragments', () => {
 
     expect(res.statusCode).toEqual(404);
   });
+
+  test('fragments content type are within acceptable type', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .set('Content-Type', 'video/mp4')
+      .auth('user1@email.com', 'password1')
+      .send('Fragment created for POST unit test');
+
+    expect(res.statusCode).toEqual(415);
+  });
 });
