@@ -36,11 +36,13 @@
     "http-auth": "^4.2.0",
     "http-auth-passport": "^1.0.7",
     "jq": "^1.7.2",
+    "markdown-it": "^13.0.1",
     "passport": "^0.6.0",
     "passport-http-bearer": "^1.0.1",
     "pino": "^8.14.1",
     "pino-http": "^8.3.3",
     "pino-pretty": "^10.0.0",
+    "sharp": "^0.32.4",
     "stoppable": "^1.1.0"
   }
 }

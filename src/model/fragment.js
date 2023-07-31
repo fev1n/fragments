@@ -3,6 +3,9 @@
 const { randomUUID } = require('crypto');
 // Use https://www.npmjs.com/package/content-type to create/parse Content-Type headers
 const contentType = require('content-type');
+//Refer https://www.npmjs.com/package/markdown-it
+var MarkdownIt = require('markdown-it'),
+  md = new MarkdownIt();
 
 // Functions for working with fragment metadata/data using our DB
 const {
@@ -133,7 +136,18 @@ class Fragment {
    * @returns {Array<string>} list of supported mime types
    */
   get formats() {
-    return [this.mimeType];
+    let result = [];
+    if (this.type.includes('text/plain')) {
+      result = ['text/plain'];
+    } else if (this.type.includes('text/markdown')) {
+      result = ['text/plain', 'text/html', 'text/markdown'];
+    } else if (this.type.includes('text/html')) {
+      result = ['text/plain', 'text/html'];
+    } else if (this.type.includes('application/json')) {
+      result = ['application/json', 'text/plain'];
+    }
+    //return empty array if the type is not supported
+    return result;
   }
 
   /**
@@ -145,6 +159,45 @@ class Fragment {
     const { type } = contentType.parse(value);
     // const supportedTypes = ['text/plain', 'text/html'];
     return supportedTypes.includes(type) ? true : false;
+  }
+
+  /**
+   * Returns data after conversion based on requirement
+   * @param {string} value type of data in which it is to be changed
+   * @returns {string} data with changed type
+   */
+  async textConvert(value) {
+    var result, data;
+    data = await this.getData();
+    if (value == 'plain') {
+      if (this.type == 'application/json') {
+        result = JSON.parse(data);
+      } else {
+        result = data;
+      }
+    } else if (value == 'html') {
+      if (this.type.endsWith('markdown')) {
+        result = md.render(data.toString());
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Returns string of newly changed type name by changing extension
+   * @param {string} value extension to be changed
+   * @returns {string} changes type name
+   */
+  extConvert(value) {
+    var ext;
+    if (value == 'txt') {
+      ext = 'plain';
+    } else if (value == 'md') {
+      ext = 'markdown';
+    } else {
+      ext = value;
+    }
+    return ext;
   }
 }
 

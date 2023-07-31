@@ -11,8 +11,14 @@ const router = express.Router();
 // Define our first route, which will be: GET /v1/fragments
 router.get('/fragments', require('./get'));
 
+//Gets all fragment with expand info on each
+router.get('/fragments/?expand', require('./get'));
+
 //Gets an authenticated user's fragment data with the given id.
-router.get('/fragments/:id', require('./getFragmentsDataById'));
+router.get('/fragments/:id/info', require('./getFragmentsDataById'));
+
+//Gets an fragment data of given ID
+router.get('/fragments/:id', require('./getFragmentById'));
 
 // Support sending various Content-Types on the body up to 5M in size
 const rawBody = () =>

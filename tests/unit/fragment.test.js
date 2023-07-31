@@ -6,17 +6,14 @@ const wait = async (ms = 50) => new Promise((resolve) => setTimeout(resolve, ms)
 
 const validTypes = [
   `text/plain`,
-  /*
-   Currently, only text/plain is supported. Others will be added later.
-
   `text/markdown`,
   `text/html`,
   `application/json`,
-  `image/png`,
-  `image/jpeg`,
-  `image/webp`,
-  `image/gif`,
-  */
+  'text/plain; charset=utf-8',
+  // `image/png`,
+  // `image/jpeg`,
+  // `image/webp`,
+  // `image/gif`,
 ];
 
 describe('Fragment class', () => {
@@ -168,6 +165,33 @@ describe('Fragment class', () => {
       });
       expect(fragment.formats).toEqual(['text/plain']);
     });
+
+    test('formats returns the expected result for html text', () => {
+      const fragment = new Fragment({
+        ownerId: '1234',
+        type: 'text/html',
+        size: 0,
+      });
+      expect(fragment.formats).toEqual(['text/plain', 'text/html']);
+    });
+
+    test('formats returns the expected result for markdown text', () => {
+      const fragment = new Fragment({
+        ownerId: '1234',
+        type: 'text/markdown',
+        size: 0,
+      });
+      expect(fragment.formats).toEqual(['text/plain', 'text/html', 'text/markdown']);
+    });
+
+    test('formats return the expected result for application/json', () => {
+      const fragment = new Fragment({
+        ownerId: '1234',
+        type: 'application/json',
+        size: 0,
+      });
+      expect(fragment.formats).toEqual(['application/json', 'text/plain']);
+    });
   });
 
   describe('save(), getData(), setData(), byId(), byUser(), delete()', () => {
@@ -252,6 +276,17 @@ describe('Fragment class', () => {
 
       await Fragment.delete('1234', fragment.id);
       expect(() => Fragment.byId('1234', fragment.id)).rejects.toThrow();
+    });
+  });
+
+  describe('extConvert() converts the type of extension', () => {
+    test('should return plain from txt parameter', async () => {
+      const ext = 'txt';
+      expect(() => Fragment.extConvert(ext) == 'plain');
+    });
+    test('should return markdown from md parameter', async () => {
+      const ext = 'md';
+      expect(() => Fragment.extConvert(ext) == 'markdown');
     });
   });
 });

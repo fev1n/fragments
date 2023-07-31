@@ -25,7 +25,7 @@ describe('GET /v1/fragments', () => {
       .post('/v1/fragments')
       .set('Content-Type', 'text/plain')
       .auth('user1@email.com', 'password1')
-      .send('Fragment created for POST unit test');
+      .send('Fragment created for GET unit test');
 
     const res = await request(app)
       .get('/v1/fragments?expand=1')
