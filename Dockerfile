@@ -1,7 +1,8 @@
 # Stage 1: Buil stage
 # Parent(base) image to use as a astarting point
 # Use node version 18.16.0
-FROM node:18.16.0-alpine@sha256:9036ddb8252ba7089c2c83eb2b0dcaf74ff1069e8ddf86fe2bd6dc5fecc9492d AS build
+
+FROM --platform=linux/arm64/v8 node:18.16.0-alpine AS build
 
 LABEL maintainer="Fevin Patel <fevin.tech@aol.com>"
 LABEL description="Fragments node.js microservice - Build stage"
@@ -34,7 +35,7 @@ RUN npm install
 COPY ./src ./src
 
 # Stage 2: Production stage
-FROM node:18.16.0-alpine@sha256:9036ddb8252ba7089c2c83eb2b0dcaf74ff1069e8ddf86fe2bd6dc5fecc9492d AS production
+FROM --platform=linux/arm64/v8 node:18.16.0-alpine AS production
 LABEL description="Fragments node.js microservice - Production Stage"
 
 ENV PORT=8080
