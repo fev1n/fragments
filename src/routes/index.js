@@ -1,6 +1,7 @@
 // src/routes/index.js
 
 const express = require('express');
+const { hostname } = require('os');
 
 // version and author from package.json
 const { version, author } = require('../../package.json');
@@ -31,6 +32,8 @@ router.get('/', (req, res) => {
     author,
     githubUrl: 'https://github.com/fev1n/fragments',
     version,
+    // Include the hostname in the response
+    hostname: hostname(),
   };
   res.setHeader('Cache-Control', 'no-cache');
   res.json(createSuccessResponse(data));
