@@ -20,6 +20,9 @@ router.get('/fragments/:id/info', require('./getFragmentsDataById'));
 //Gets an fragment data of given ID
 router.get('/fragments/:id', require('./getFragmentById'));
 
+//Deletes a fragment with given ID
+router.delete('/fragments/:id', require('./delete'));
+
 // Support sending various Content-Types on the body up to 5M in size
 const rawBody = () =>
   express.raw({
