@@ -92,9 +92,8 @@ jobs:
           environment-variables: |
             LOG_LEVEL=info
             NODE_ENV=production
-            AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            AWS_SESSION_TOKEN=${{ secrets.AWS_SESSION_TOKEN }}
+            AWS_S3_BUCKET_NAME=frpatel3-fragments
+            # ...continue the rest here...
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
