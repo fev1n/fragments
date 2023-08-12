@@ -93,7 +93,6 @@ jobs:
             LOG_LEVEL=info
             NODE_ENV=production
             AWS_S3_BUCKET_NAME=frpatel3-fragments
-            # ...continue the rest here...
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
