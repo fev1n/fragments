@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
     await fragment.save();
 
     logger.debug('Setting successful response');
-    res.setHeader('Location', `${apiURL}/${fragment.id}`);
+    res.setHeader('Location', `${apiURL}${fragment.id}`);
     res.status(201).json(createSuccessResponse({ fragment }));
   } catch (error) {
     res.status(404).json(createErrorResponse(404, error));
