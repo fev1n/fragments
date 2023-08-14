@@ -60,11 +60,11 @@ describe('GET /v1/fragments/:id/info', () => {
       .get(`/v1/fragments/${req.body.fragment.id}/info`)
       .auth('user1@email.com', 'password1');
 
-    console.log(res.body.fragmentData.id);
+    console.log(res.body.fragment.id);
     console.log(fragment);
 
-    expect(res.body.fragmentData.id).toEqual(req.body.fragment.id);
-    expect(res.body.fragmentData).toEqual(req.body.fragment);
+    expect(res.body.fragment.id).toEqual(req.body.fragment.id);
+    expect(res.body.fragment).toEqual(req.body.fragment);
   });
 
   test('gets appropriate content type for specific fragment while using GET with particular id', async () => {

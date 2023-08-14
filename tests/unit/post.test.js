@@ -50,7 +50,8 @@ describe('POST /v1/fragments', () => {
       .send('Fragment created for POST unit test');
 
     logger.debug(res.header.location);
-    expect(res.header.location).toMatch(/\/v1\/fragments\/[a-zA-Z0-9-]+$/);
+    console.log(res.header.location);
+    expect(res.header.location).toMatch(`/v1/fragments/${res.body.fragment.id}`);
   });
 
   test('creating a fragment with unsupported type throws error', async () => {

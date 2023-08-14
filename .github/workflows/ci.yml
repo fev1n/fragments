@@ -81,7 +81,7 @@ jobs:
   docker-hub:
     name: Build and Push to Docker Hub
     # Don't bother running this job unless the other three all pass
-    needs: [lint, dockerfile-lint, unit-tests]
+    needs: [lint, dockerfile-lint, unit-tests, integration-tests]
     runs-on: ubuntu-latest
     steps:
       # Set up buildx for optimal Docker Builds, see:
@@ -112,3 +112,26 @@ jobs:
           push: true
           # Use 3 tags :sha-sha-7d821bd14e0d6c381dc57a5369ae1a3a9220664f, :main, and :latest
           tags: ${{ env.DOCKERHUB_REPO }}:${{ env.SHA_TAG }}, ${{ env.DOCKERHUB_REPO }}:main, ${{ env.DOCKERHUB_REPO }}:latest
+
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - name: Install node dependencies
+        # NOTE: we need to install dev dependencies too vs. production only for hurl
+        run: npm install
+      - name: Build Containers
+        run: docker compose up -d
+      - name: Setup Local AWS Resources
+        # NOTE: this file needs to be made executable *before* you check into git:
+        # $ chmod +x ./scripts/local-aws-setup.sh
+        run: ./scripts/local-aws-setup.sh
+      - name: Run Hurl Tests
+        run: npm run test:integration
