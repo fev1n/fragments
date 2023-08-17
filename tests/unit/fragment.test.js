@@ -10,10 +10,9 @@ const validTypes = [
   `text/html`,
   `application/json`,
   'text/plain; charset=utf-8',
-  // `image/png`,
-  // `image/jpeg`,
-  // `image/webp`,
-  // `image/gif`,
+  `image/png`,
+  `image/jpeg`,
+  `image/webp`,
 ];
 
 describe('Fragment class', () => {
@@ -192,6 +191,15 @@ describe('Fragment class', () => {
       });
       expect(fragment.formats).toEqual(['application/json', 'text/plain']);
     });
+
+    test('formats return the expected result for image/png, image/jpeg, image/webp', () => {
+      const fragment = new Fragment({
+        ownerId: '1234',
+        type: 'image/png',
+        size: 0,
+      });
+      expect(fragment.formats).toEqual(['image/png', 'image/jpeg', 'image/webp']);
+    });
   });
 
   describe('save(), getData(), setData(), byId(), byUser(), delete()', () => {
@@ -284,9 +292,22 @@ describe('Fragment class', () => {
       const ext = 'txt';
       expect(() => Fragment.extConvert(ext) == 'plain');
     });
+
     test('should return markdown from md parameter', async () => {
       const ext = 'md';
       expect(() => Fragment.extConvert(ext) == 'markdown');
+    });
+
+    test('should return jpeg from jpeg parameter', async () => {
+      const ext = 'jpg';
+      expect(() => Fragment.extConvert(ext) == 'jpeg');
+    });
+  });
+
+  describe('textConvert() converts data of text/*', () => {
+    test('should convert the data to json', async () => {
+      const type = 'plain';
+      expect(() => Fragment.textConvert(type) == 'application/json');
     });
   });
 });

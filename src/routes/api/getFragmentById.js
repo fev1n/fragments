@@ -22,6 +22,11 @@ module.exports = async (req, res) => {
           res.setHeader('Content-Type', `text/${ext}`);
           res.status(200).send(Buffer.from(result));
           logger.debug(ext, result);
+        } else {
+          result = await fragment.imgConvert(ext);
+          res.setHeader('Content-Type', `image/${ext}`);
+          res.status(200).send(result);
+          logger.debug(ext, result);
         }
       } catch (err) {
         res.status(415).json(createErrorResponse(415, `Unsupported type conversion`));

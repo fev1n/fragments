@@ -6,6 +6,8 @@ const contentType = require('content-type');
 //Refer https://www.npmjs.com/package/markdown-it
 var MarkdownIt = require('markdown-it'),
   md = new MarkdownIt();
+// Refer https://sharp.pixelplumbing.com/
+const sharp = require('sharp');
 
 // Functions for working with fragment metadata/data using our DB
 const {
@@ -23,6 +25,9 @@ const supportedTypes = [
   'text/markdown',
   'application/json',
   'text/html',
+  'image/png',
+  'image/jpeg',
+  'image/webp',
 ];
 
 class Fragment {
@@ -137,7 +142,13 @@ class Fragment {
    */
   get formats() {
     let result = [];
-    if (this.type.includes('text/plain')) {
+    if (
+      this.type.includes('image/png') ||
+      this.type.includes('image/jpeg') ||
+      this.type.includes('image/webp')
+    ) {
+      result = ['image/png', 'image/jpeg', 'image/webp'];
+    } else if (this.type.includes('text/plain')) {
       result = ['text/plain'];
     } else if (this.type.includes('text/markdown')) {
       result = ['text/plain', 'text/html', 'text/markdown'];
@@ -184,6 +195,27 @@ class Fragment {
   }
 
   /**
+   * Converts image data to a different format based on the provided extension.
+   * @param {string} value - The target extension for the image conversion (e.g., 'jpg', 'jpeg', 'webp', 'png').
+   * @returns {Buffer} - The image data in the specified format.
+   */
+  async imgConvert(value) {
+    var result, data;
+    data = await this.getData();
+
+    if (this.type.startsWith('image')) {
+      if (value == 'jpg' || value == 'jpeg') {
+        result = await sharp(data).jpeg();
+      } else if (value == 'webp') {
+        result = await sharp(data).webp();
+      } else if (value == 'png') {
+        result = await sharp(data).png();
+      }
+    }
+    return result.toBuffer();
+  }
+
+  /**
    * Returns string of newly changed type name by changing extension
    * @param {string} value extension to be changed
    * @returns {string} changes type name
@@ -194,6 +226,8 @@ class Fragment {
       ext = 'plain';
     } else if (value == 'md') {
       ext = 'markdown';
+    } else if (value == 'jpg') {
+      ext = 'jpeg';
     } else {
       ext = value;
     }
